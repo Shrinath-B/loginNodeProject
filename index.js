@@ -4,7 +4,6 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 /* const cookieParser = require('cookie-parser');
 const session = require('express-session'); */
-const dbConnect = require('./src/model/database.js');
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -21,9 +20,15 @@ const allowCrossDomain = function (req, res, next) {
     next();
 }
 
+const secretKey = 'shri';
+
 const loginRouter = require('./src/routes/loginRoutes.js')(allowCrossDomain);
+const signupRouter = require('./src/routes/signupRouter.js')(allowCrossDomain);
+const dashboardRouter = require('./src/routes/dashboardRouter.js')(allowCrossDomain);
 
 app.use('/login', loginRouter);
+app.use('/signup', signupRouter);
+app.use('/dashboard', dashboardRouter);
 
 app.listen(port, () => {
     debug(`listening to port ${port}`);
